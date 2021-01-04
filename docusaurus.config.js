@@ -1,16 +1,16 @@
 module.exports = {
-  title: 'Microtick Documentation',
-  tagline: 'Microtick community documentation project',
-  url: 'https://documentation.microtick.com',
+  title: 'Microtick Docusaurus',
+  tagline: 'Community documentation project',
+  url: 'https://docs.microtick.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'Microtick', 
-  projectName: 'docusaurus', 
+  projectName: 'Microtick Docusaurus', 
   themeConfig: {
     navbar: {
-      title: 'Main',
+      title: 'Microtick',
       logo: {
         alt: 'Microtick Logo',
         src: 'img/logo.svg',
@@ -46,7 +46,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Docusaurus',
+          title: 'Docusaurus Links',
           items: [
             {
               label: 'Stack Overflow',
