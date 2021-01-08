@@ -7,35 +7,53 @@ slug: /whitepaper/futures
 
 _This feature is being proposed and not yet under development._
 
-Futures and options are similar product and in the Microtick case can work together to
+Futures and options are similar products and can work together to
 enable short-term token futures that bring the Microtick consensus price to tradable reality (for 
-tokenized assets only). In the future, it is easy to imagine similar futures markets being built
-off-chain for other types of assets, or even built into escrow arrangements to settle OTC trades.
+tokenized assets only). For non-tokenized assets, similar futures markets could be built
+off-chain for other types of assets, or built into escrow arrangements to settle OTC trades.
+
+## Token Futures - Goals and Benefits 
+
+The primary goal of the design of the Microtick token futures markets was to create the capability to trade tokenized assets **on-chain and at the consensus price** as determined by the separate and distinct, option-based consensus price markets.
+
+A core requirement of the futures product is the ability to create riskless hedge using the options traded on the existing Microtick consensus markets, such that the consensus markets and futures markets are counterparts, one backed by native tokens using options, the other backed with off-chain IBC tokens using futures. In order to do this, the futures contracts will be standardized using the same method (time durations) as the consensus markets use:
 
 | Asset   | Backing         | Standardization                                     |
 |---------|:---------------:|-----------------------------------------------------|
-| Futures | Token deposit   | Time duration (5-minute, 15-minute, 1-hour, etc)    |
 | Options | Native token    | Time duration (5-minute, 15-minute, 1-hour, etc)    |
+| Futures | IBC Token       | Time duration (5-minute, 15-minute, 1-hour, etc)    |
 
-## Operation
+A side benefit of this design, possible because price discovery is decoupled from trading, is gained when trading IBC assets of the same denomination but originating from different chains. The Microtick system can trade these assets using the exact same liquidity pools for price discovery, while keeping the token exchange markets distinct and possibly with a different spread that reflects varying degrees of risk for assets transferred through multiple chains. As such, there should be less need to unwind IBC tokens through multiple chains when trading using Microtick.
 
-Futures as proposed would be standardized by time duration in a manner identical to the Microtick short-term
-option product. This allows the two asset classes to be used as a hedge against one another.
+## Market Mechanics
 
-In addition, they would be traded using a floating order book, specified by +/- delta prices from the
-underlying consensus price. This would allow Microtick token futures and synthetic option positions to be used
-as a direct hedge against each other.
+Futures markets on Microtick will use a floating order book, specified through +/- delta prices from the underlying consensus price. As the consensus price (or price ratio) generated on the options markets moves up and down, the absolute values of the bids and asks on the floating order book move automatically, keeping the same relationship to the consensus price as specified by the +/- delta price in the quote.
 
-**Buying a token future** means the buyer pays the denomination asset immediately to the seller in return for
-the future delivery of the numerator asset at contract expiration.
+### Buying a token future 
 
-**Selling a token future** means the seller receives the denomination asset immediately and deposits backing 
-to the contract to cover the future delivery at contract expiration.
+**Buying a token future** means the buyer pays the denomination asset immediately to the seller in return for the future delivery of the numerator asset at contract expiration.
 
-In both cases, the ratio of numerator : denominator asset is determined by the external consensus price, plus or 
-minus the bid or ask delta, at the time the trade is undertaken.
+#### Example
 
-## Example 1
+BTC/ETH is priced at 20. A buyer wants to buy 2.5 12-hour BTC futures and (disregarding any quote delta prices) pays 2.5 * 20 = 50 ETH to the seller immediately. After 12 hours, the buyer can claim 2.5 BTC from the smart contract.
+
+### Selling a token future
+
+**Selling a token future** means the seller receives the denomination asset immediately and deposits backing to the contract to cover the future delivery at contract expiration.
+
+#### Example
+
+Using the same price as the last example, a seller wants to sell 1.5 12-hour BTC futures. Upon selling the contract, they receive 1.5 * 20 = 30 ETH immediately. The seller also moves 1.5 BTC into the smart contract at this time. 
+
+For the seller there is no interaction with the futures contract after 12-hours. Everything happens immediately at the time of the sale.
+
+## Stablecoin Base Markets
+
+Because there is no spread on the Microtick consensus price markets, there is no need to operate a separate price market for ETH/BTC as long as there is a ETH/DAI and BTC/DAI market running. The consensus price for ETH/BTC is simply the ratio of ETH/DAI divided by BTC/DAI. This concentrates liquidity by limiting the number of different markets necessary to trade N token types from N * (N-1) / 2 to just N.
+
+Here are a couple more examples. These examples show how futures trades backed by IBC tokens can be precisely hedged by options backed by stablecoins. In both, the ratio of numerator : denominator asset is determined by the external consensus price, plus or minus the bid or ask delta, at the time the trade is undertaken.
+
+#### Example 1
 
 As an example, to understand how this works, assume a consensus price market where the token pair is a target
 asset (BTC in the example) in units of the native token backing (DAI stablecoin on the Microtick main chain). 
@@ -67,7 +85,7 @@ Position cost: 7537.5 DAI + 12.5 DAI = 7550 DAI
 This example illustrates how the futures market will allow traders to take advantage of the consensus price with
 actual token backing.
 
-## Example 2
+#### Example 2
 
 Let's take a more complicated example where the futures contract uses BTC/ETH but the Microtick options 
 stillpay in native token backing (DAI). We'll see that this only requires a second synthetic position, the first 
