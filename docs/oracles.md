@@ -1,11 +1,15 @@
 ---
 id: oracles
 title: Blockchain Oracles
-sidebar_label: Comparison to other oracles
+sidebar_label: Comparison to Oracles
 slug: /whitepaper/oracles
 ---
 
-## Standard approach to Oracles
+The following metric can be used as a basis for ranking various blockchain-based oracles. The diagram illustrates the stages of price discovery for any oracle. The more of those stages that happen on-chain, the higher the DeFi ranking for an oracle should be.
+ 
+![DeFi Price Onboarding Ranking](../static/img/defi_price_onboarding.png)
+
+## Standard approach to oracles
 
 The standard approach blockchains take for oracles is to enlist observers to input prices
 to the chain over a specified time interval or "epoch". These price inputs are collected
@@ -23,7 +27,7 @@ The obvious problem with this method of collecting price inputs is prices can ch
 types of oracles can discourage observers from submitting a price at a new high or low
 even if this is actually the correct observation.
 
-## Option pricing applied to the Oracle problem
+## Option pricing applied to the oracle problem
 
 Microtick takes a different approach to indentivizing accurate price inputs. Rather than
 dividing time into fixed epochs, Microtick creates a set of markets of fixed time _duration_. 
