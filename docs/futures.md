@@ -56,9 +56,13 @@ For the maker there is no further interaction required until the quote is either
 
 Futures markets on Microtick will use a floating order book, specified through a single +/- delta price that specifies the spread for each quote placed on the order book.  As the consensus price (or price ratio) generated on the consensus markets moves up and down the absolute values of the bids and asks for the floating order book move automatically, keeping the same relationship to the consensus price as specified by the delta price in the quote.
 
-Because the Microtick futures quotes float with the consensus price, they stay open until canceled. The tokens paid by the taker get automatically added to the opposing side of the quoted spread so the maker doesn't have to do anything to continue to accrue profit from trading activity.  (In real-world use the maker will likely be monitoring the consensus price market in relation to external markets such as DEX's and AMM's)
+![Token flow](../static/img/futures_buy.png)
+
+The same thing happens in reverse for a futures sell order:
 
 ![Token flow](../static/img/futures_buy.png)
+
+Because the Microtick futures quotes float with the consensus price, they can simply stay open until canceled. The tokens paid by the taker get automatically added to the opposing side of the quoted spread so the maker doesn't have to do anything to continue to accrue profit from trading activity.  (In real-world use the maker will likely be monitoring the consensus price market in relation to external markets such as DEX's and AMM's)
 
 ## Stablecoin Base Markets
 

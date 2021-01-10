@@ -13,9 +13,9 @@ Yes, Microtick is an oracle in that a stable consensus price is generated on-cha
 
 But Microtick is also a standalone marketplace that generates a consensus price that can be traded, hedged and arbitraged (in the case of tokenized assets) using a futures mechanism [Futures](futures.md).
 
-### Can the futures price be different from the live price on an AMM or DEX?
+### Can the futures price on Microtick be different from the live price on an AMM or DEX?
 
-Yes! Because the Microtick consensus is based on an average of prices, some of which have durations of up to 12 hours, there is no reason for those market makers to rapidly update their quotes. This can cause the price to lag (or lead, depending on if prices are mean reverting) the live trading price on a DEX or AMM. If the Microtick price is better than the live price and you can wait for the futures delivery, go for it!
+Yes! Because the Microtick consensus is based on an average of prices, some of which have durations of up to 12 hours, there is not always a reason for those market makers to rapidly update their quotes in response to small price changes. This can cause the overall consensus price to lag (or lead, depending on if prices are mean reverting) the live trading price on a DEX or AMM. If the Microtick price is better than the live price and you can wait for the futures delivery, go for it!
 
 For more information see the section on [Price Discovery](overview.md)
 

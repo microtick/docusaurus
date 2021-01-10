@@ -11,15 +11,13 @@ In this section we'll take a look how the price consensus markets work in Microt
 
 ![System Diagram](../static/img/microtick_overview_options.png)
 
-### Benefits to the Cosmos ecosystem
+## Benefits to the Cosmos ecosystem
 
 There are other oracles available in Cosmos but Microtick offers one that is both stable (i.e. does not depend on volatility for its price discovery) and one that can be hedged. If your Dapp depends on data but there's no way to hedge exposure with your current oracle, or worse, intra-block volatility can cause significant losses, you might benefit from using Microtick's hedgeable consensus price markets. Even better, they do not depend on tokenization of the underlying asset in order to reap the benefits of decentralized price discovery.
 
-## Market Mechanics
+## The Basics
 
-### The Basics
-
-#### Price quotes
+### Maker: Price quotes
 
 Microtick uses a native token as backing for price quotes places on its consensus markets. These price quotes are weighted and averaged together to arrive at a consensus price. The weights are based on how tight the market maker is willing to specify the +/- accuracy for their quote over the time duration of the market as well as on the amount of backing the market maker is willing to put behind the price quote.
  
@@ -29,13 +27,22 @@ For more information on what is meant by "premium" see the [FAQ](faq.md).
 
 ![Price quote diagram](../static/img/price_quotes.png)
 
-#### Trades
+### Taker: Trades
 
+When a trade is placed against a quote, the trader selects the direction of the trade:
+ 
+* A call trade is a bet that the consensus price goes up over the time duration of the trade.
+* A put trade is a bet that the consensus price goes down over the time duration of the trade.
 
+All trades start at the current consensus price (point **A** below), and last for the time duration of the quote. The trade pays out in relation to the premium paid as shown in the diagram.
 
-#### Markets
+![Consensus Premium Bands](../static/img/consensus_premium_bands.png)
 
-A Microtick market consists of a set of standardized time durations:
+The trader wants to pay as little premium as possible in order to draw in the profit bands so the same price movement pays out more.
+
+### Markets
+
+In order to concentrate liquidity, Microtick markets are standardized by time durations:
 
 * 5-minute 
 * 15-minute
@@ -47,9 +54,9 @@ Each standardized time duration has a separate order book of quotes.  Market mak
 
 Therefore, the market makers play a game of placing and maintining quotes with accurate real world spot and volatility estimates (while tracking the Microtick consensus to ensure consistency).  Traders play a game of looking for trading opportunities based on underpriced premiums or a consensus price that differs significantly from the real-world value.
 
-### Deep Dive
+## Deep Dive
 
-#### Quotes
+### Quotes
 
 A quote consists of the following elements:
 
@@ -59,17 +66,9 @@ A quote consists of the following elements:
 | Token Backing    | Market maker backs the quote with an amount of on-chain token value. |  Market Maker        |
 | Premium | A fair value for both a put and a call with a strike price = the quote’s spot price. | Market Maker |
 | Duration | Standardized duration |  Market Maker |
-| Weight (Quantity) | Weight, also referred to as quantity, is calculated by the following formula: Weight =Token BackingLeverage * Premium  Leverage is a constant set to 10 for all quotes currently. | Game rules |
-| Actual Call Premium |  Dynamic value | |
-| Actual Put Premium | Dynamic value | |
-
-
-Call Price= Premium +Spot - Consensus2
-Game rules, may vary block by block
-
-
-Put Price = Premium - Spot - Consensus2
-Game rules, may vary block by block
+| Weight (Quantity) | ![Weight Formula](../static/img/formula_weight.png) | Game rules |
+| Actual Call Premium | ![Call Formula](../static/img/formula_call.png) | Game rules, may vary block by block |
+| Actual Put Premium | ![Put Formula](../static/img/formula_put.png) | Game rules, may vary block by block |
 
 A quote is an assertion of real-world price made by the market maker and backed with an amount on on-chain token backing.
 
@@ -83,49 +82,35 @@ The actual call and put premiums paid by traders to the market maker in practice
 
 When placing a quote, the following “2x limitations” apply:
 
-Spot 2x limitation.  A quote cannot be placed that will become a free call or put on the resulting order book. This rule protects the party placing the quote as well as limits the spot to be within 2x of the quoted premium of the resultant consensus.  This rule also lets us calculate the maximum amount a given amount of tokens can move the price of a market:
-Max consensus change =2 * New Quote's Token BackingLeverage * Active Quote Weights
+**Spot 2x limitation**.  A quote cannot be placed that will become a free call or put on the resulting order book. This rule protects the party placing the quote as well as limits the spot to be within 2x of the quoted premium of the resultant consensus.  This rule also lets us calculate the maximum amount a given amount of tokens can move the price of a market:
+
+![Max consensus change](../static/img/formula_max_consensus.png)
+
 This formula applies for any spot within 2x of the premium according to the above rule, regardless of the spot, premium or time duration chosen by the market maker.
 
-Premium 2x limitation.  A quote cannot be placed with a premium of more than 2x the current order book consensus premium for that time duration.  The order book consensus premium is defined as:
-Order Book Consensus Premium =order book quotesBackingLeverage * order book quotesWeight 
+**Premium 2x limitation**.  A quote cannot be placed with a premium of more than 2x the current order book consensus premium for that time duration.  The order book consensus premium is defined as:
+
+![Order Book Consensus Premium](../static/img/formula_consensus.png)
+
 for the order book the quote is placed on. This rule means a quote must be competitive on the order book and can’t be placed with an arbitrarily large premium.
 
-Time 2x limitation.  A quote must be updated within 2x the time duration or anyone may cancel it and collect the backing for the quote.  This ensures stagnant quotes will always be removed from the marketplace.
+**Time 2x limitation**.  A quote must be updated within 2x the time duration or anyone may cancel it and collect the backing for the quote.  This ensures stagnant quotes will always be removed from the marketplace.
 
 Normally, for reasonable market makers placing earnest quotes the above limitations will never be an issue.
 
-#### Trades
+### Trades
 
 A trade consists of the following elements:
 
-Name
-Description
-Set by
-Direction
-Call (long) or Put (short)
-Trader
-Strike Price
-Threshold value above (call) or below (put) which the trader is “in-the-money”
-Game rules set the strike price as the current market consensus price when a trade is placed.
-Expiration Time
-Trade expiration after which it may be settled.
-Game rules set the expiration time as the current time plus the duration for the order book the trade is placed on.
-Quantity
-Quantity is another word for weight when specifying an amount for the trade.
-Trader
-Token Backing
-Tokens are transferred from the quote into the trade according to the proportion of trade quantity to quote quantity when the trade is filled.
-Game rules transfer quote backing to become trade backing when a trade is matched.
-Current Value
-For a call, if the current consensus price is higher than the strike price:
-
-Call =Quantity *(Consensus - Strike)
-
-For a put, if the current consensus price is lower than the strike price:
-
-Put =Quantity *(Strike - Consensus)
-Game rules, may vary block by block until settled
+| Name             | Description                                    | Set by                 |
+|------------------|------------------------------------------------|------------------------|
+| Direction | Call (long) or Put (short) | Trader |
+| Strike Price | Threshold value above (call) or below (put) which the trader is “in-the-money” | Game rules set the strike price as the current market consensus price when a trade is placed. |
+| Expiration Time | Trade expiration after which it may be settled. | Game rules set the expiration time as the current time plus the duration for the order book the trade is placed on. |
+| Quantity | Quantity is another word for weight when specifying an amount for the trade. | Trader |
+| Token Backing | Tokens are transferred from the quote into the trade according to the proportion of trade quantity to quote quantity when the trade is filled. | Game rules transfer quote backing to become trade backing when a trade is matched. |
+| Current Value (call) | ![Call Value](../static/img/formula_call_value.png) | Valid for a call, if the current consensus price is higher than the strike price |
+| Current Value (put) | ![Put Value](../static/img/formula_put_value.png) | Valid for a put, if the current consensus price is lower than the strike price |
 
 A trade is purchased from the market maker according to the quantity multiplied by the actual call or put value of the quote at the time the trade is placed.  (See “Actual Call Premium” and “Actual Put Premium” descriptions under the Quotes section)
 
@@ -134,10 +119,12 @@ Once expiration time has passed, a trade may be settled by anyone sending a Sett
 The trader that bought the call or put is paid the current value of the trade at the time of settlement.  This amount is taken out of the trade backing (if the amount is more than the trade backing, the extra value is ignored).  Finally, the original market maker is reimbursed the unpaid backing back into their original account.
 
 Trades may have more than one quote as counter parties.  In this case, each individual counterparty is handled using the same rules as described above.
-Global Consensus
-All active quotes are weighted as described under Quotes, above.
-At all times, the weighted average of the spot prices of all active quotes across all standardized time durations is defined to be the global consensus price for a market.
 
-Global Consensus =quotes (Spot * Weight)quotes Weight
+### Global Consensus
 
-To place a trade, traders specify a direction and a quantity (weight) on a given order book.  Placing a trade removes that amount of quantity (weight) from the quote and the consensus is recalculated.
+* All active quotes are weighted as described under Quotes, above.
+* At all times, the weighted average of the spot prices of all active quotes across all standardized time durations is defined to be the global consensus price for a market.
+
+![Global Consensus](../static/img/formula_global_consensus.png)
+
+* To place a trade, traders specify a direction and a quantity (weight) on a given order book.  Placing a trade removes that amount of quantity (weight) from the quote and the consensus is recalculated.
