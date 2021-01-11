@@ -60,7 +60,7 @@ Futures markets on Microtick will use a floating order book, specified through a
 
 The same thing happens in reverse for a futures sell order:
 
-![Token flow](../static/img/futures_buy.png)
+![Token flow](../static/img/futures_sell.png)
 
 Because the Microtick futures quotes float with the consensus price, they can simply stay open until canceled. The tokens paid by the taker get automatically added to the opposing side of the quoted spread so the maker doesn't have to do anything to continue to accrue profit from trading activity.  (In real-world use the maker will likely be monitoring the consensus price market in relation to external markets such as DEX's and AMM's)
 
