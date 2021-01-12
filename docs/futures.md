@@ -7,7 +7,7 @@ slug: /whitepaper/futures
 
 _This feature is being proposed and not yet under development._
 
-Futures and options are similar products and can work together to bring the Microtick consensus price to tradable reality (for  tokenized assets only). For non-tokenized assets, similar futures markets could be built off-chain for other types of assets, or built into escrow arrangements to settle OTC trades.
+Futures and options are complementary products and can work together to bring the Microtick consensus price to tradable reality (for  tokenized assets only). For non-tokenized assets, similar futures markets could be built off-chain for other types of assets, or built into escrow arrangements to settle OTC trades.
 
 In this section we will focus on the Microtick token futures markets and futures contracts (shown in green below).
 
