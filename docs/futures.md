@@ -66,6 +66,8 @@ The same thing happens in reverse for a futures sell order:
 
 ![Token flow](../static/img/futures_sell.png)
 
+In reality, a single quote can have tokens on both sides of the spread at the same time. The diagrams above are for illustration purposes to simplify the examples.
+
 ## Stablecoin Base Markets
 
 Because the Microtick consensus price is an exact floating point number, there is no need to operate a distinct price market for ETH/BTC as long as there is a ETH/DAI and BTC/DAI market running. The consensus price for ETH/BTC is a simple calculation - the ratio of ETH/DAI divided by BTC/DAI. Reducing the number of consensus price markets concentrates liquidity by reducing the number of markets from N * (N-1) / 2 to just N.
