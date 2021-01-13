@@ -9,7 +9,7 @@ Microtick has three distinguishing features that differ from trading platforms y
 
 * **Decoupled price discovery** in separate, self-contained Schelling point consensus price markets.
 * A **short-term micro-option product** used to hedge consensus price volatility using the native on-chain backing token.
-* **Token futures** used to trade off-chain tokenized assets based on the decoupled consensus prices, backed by tokens transferred on-chain through the Cosmos IBC protocol.
+* **Token futures** used to trade tokenized assets using decoupled consensus prices, backed by tokens transferred on-chain through the Cosmos IBC protocol.
 
 ![Microtick overview](../static/img/microtick_overview.png)
 
