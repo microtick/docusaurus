@@ -15,7 +15,7 @@ In this section we will focus on the Microtick token futures markets and futures
 
 ### Benefits to the Cosmos ecosystem
 
-What this means to the Cosmos ecosystem is an additional pool of liquidity available for trading IBC tokens. As will be shown below, tokens of the same denomination but originating from different chains will be able to take advantage of the same Microtick consensus price even though these are different token types. This is because on the Microtick system price discovery is decoupled from trade activity.
+What this means to the Cosmos ecosystem is an additional pool of liquidity available for trading IBC tokens. As will be shown below, IBC tokens of the same denomination but originating from different chains (ATOMs from the hub versus ATOMs from a different chain) will be able to take advantage of the same Microtick consensus price even though these are unique IBC tokens. This is possible because on the Microtick system price discovery is decoupled from trade activity.
 
 ## Token Futures 
 

@@ -17,7 +17,7 @@ The Microtick project is an experiment in a new mechanism for decentralized pric
 
 ### Rethinking Price Discovery
 
-To create such a trading system, we've borrowed a concept from game theory called the **Shelling point** and adapted it for trading using a well-known financial derivative: the option. Options are well suited as a blockchain oracle reward / slashing mechanism because the mathematics are well-known and the incentive structure is proven. For example, if an oracle slashes participants for being outliers during a sampling window, then no one will want to be the first to put in new prices as they change. Options solve this by assigning a **time duration** to each quote and an accuracy range to manage stale quots.
+To create such a trading system, we've borrowed a concept from game theory called the **Shelling point** and adapted it for trading using a well-known financial derivative: the option. Options are well suited as a blockchain oracle reward / slashing mechanism because the mathematics are well-known and the incentive structure is proven. For example, if a traditional oracle slashes participants for being outliers during a sampling window, then no one will want to be the first to put in new prices as they change. Options solve this by assigning a **time duration** to each quote and an accuracy range to manage stale quotes.
 
 ### Promoting Decentralization
 

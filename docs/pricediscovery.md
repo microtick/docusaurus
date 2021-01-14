@@ -5,11 +5,11 @@ sidebar_label: Price Discovery
 slug: /whitepaper/pricediscovery
 ---
 
-The term, "price discovery", is a very broad term. When used in the realm of traditional financial markets, the term is generally used to refer to the passive act of observing prices trades occur at. There are two assumptions behind this:
+The term, "price discovery", is a very broad term. When used in the realm of traditional financial markets, the term is generally used to refer to the passive act of observing prices trades occur at. There are three assumptions behind this:
 
 1. There is enough trade liquidity for an accurate price to be generated.
 2. The price is observed in realtime. For example, 15-minute delated prices are probably no longer accurate in a volatile market.
-3. Participants act in realtime to correct short-term trade imbalances.
+3. Participants in the observed markets act in realtime to correct short-term trade imbalances.
 
 ### Order Books
 
