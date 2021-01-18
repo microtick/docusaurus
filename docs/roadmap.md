@@ -8,7 +8,7 @@ slug: /roadmap
 ## 2020
 
 Phase 1: **Complete July, 2020**
-* Decentralized main net
+* Decentralized mainnet
 * Consensus price markets
 * DAI stable coin backing
 
