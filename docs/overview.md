@@ -13,7 +13,7 @@ Microtick has three distinguishing features that differ from trading platforms y
 
 ![Microtick overview](../static/img/microtick_overview.png)
 
-The Microtick project is an experiment in a new mechanism for decentralized price discovery and trading. Its vision is to create a trading system more suited for blockchain usage where blocks come at discrete, relatively infrequent and sometimes unpredictable times, and then build upon that vision to create a new trading paradigm that not only works better on, but **promotes** decentralized trading over the legacy centralized paradigm.
+The Microtick project is a new mechanism for decentralized price discovery and trading. Its vision is to create a trading system more suited for blockchain usage where blocks come at discrete, relatively infrequent and sometimes unpredictable times, and then build upon that vision to create a new trading paradigm that not only works better on, but **promotes** decentralized trading over the legacy centralized paradigm.
 
 ### Rethinking Price Discovery
 
