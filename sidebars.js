@@ -1,8 +1,8 @@
 module.exports = {
   someSidebar: {
-    Roadmap: ['roadmap'],
+    Roadmap: ['roadmap', 'tokenlicense'],
     Whitepaper: ['overview', 'pricediscovery', 'oracles', 'consensus', 'futures'],
-    "Frequently Asked Questions": ['faq'],
+    "Frequently Asked Questions": ['faq', 'license'],
     "How To": ['runvalidator']
   },
 };
