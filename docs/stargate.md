@@ -20,7 +20,9 @@ The chain adds two new governance proposals specific to the x/microtick module: 
 IBC tokens have a naming mechanism based on the port / channel and their denomination on the originating chain. This results in token denominations
 on the receiving chains that look like:
 
+```
 ibc/ED2456914E48C1E17B7BD922177291EF8B7F553EDF1B1F66B6FC1A076524B22F
+```
 
 This mechanism is described in more detail here: https://docs.cosmos.network/master/architecture/adr-001-coin-source-tracing.html
 
@@ -60,19 +62,58 @@ option legs independently.
 
 To query synthetic bids and asks from the CLI:
 
+```
 $ mtm query microtick synthetic <market> <duration>
+```
 
 Trading a synthetic position is identical to trading an option, but uses the keyword "syn" instead of "call" or "put". The profit / loss of a synthetic
 position is identical to buying or selling the underlying asset, over the time duration of the position - except you don't have to pay the strike price.
 (You do have to put up token backing for the short leg of the position, which is refunded to you at trade settlement if the trade moves in your direction)
 
+```
 $ mtm tx microtick trade <market> <duration> [buy|sell] syn <quantity>
+```
 
-## Dynamic Commissions
+## Commission Structure
+
+The previous version of Microtick had TICK rewards based directly on the amount of commissions paid. Microtick Stargate calculates TICK rewards based
+on the amount of backing for quotes, and based on a fixed rate for trades (default 0).  These are specified in the genesis file and independently 
+adjustable through governance. This will allow for much better fine tuning of TICK rewards, similar to the way there are separate commissions for 
+various transactions:
+
+| Action | Default Commission | Default TICK Reward | Notes |
+| ------ | ------------------ | ------------------- | ----- |
+| Create Quote | 0.04% | 200 TICK / unit | Depositing quote backing pays the create commission rate |
+| Update Quote | 0.005% | 25 TICK / unit | Maintaining quotes is cheaper than canceling / re-creating |
+| Trade | 0.025 (fixed) | 0 | By default 0.025 (fixed) is held in escrow as a trade settlement incentive |
+| Settle Trade | 0.01 (fixed) | 0 | |
+| Cancel Quote | 0.01% | N/A | Withdrawing quote backing pays the cancel commission rate |
+
+## Adjustment Factor for Quotes
 
 With Microtick Stargate we introduce the concept of an adjustment factor that is used to dynamically adjust commissions and TICK reward based on how
 competitive a quote's premium is in the marketplace.
 
+Every quote placed, updated or deposited (add backing to) is subject to an adjustment factor. This is calculated based on the ratio of the quote's spread
+to the inside spread as shown in the diagram below.
+
 ![Adjustment Factor](../static/img/adjustment_factor.png)
 
-## Dynamic TICK Reward
+In order to pay the base commission amount specified in the genesis file, a quote's spread must be equal to or less than the inside spread (if less, then
+the minimum adjustment factor is always 1, or no adjustment)
+
+* Commissions are adjusted up based on the adjustment factor.
+* TICK rewards are adjusted down based on the adjustment factor.
+
+In the example in the diagram, if quote 2 were placed on the market with the inside spread as shown, the commission paid would be 1.4 * base commission,
+and the TICK reward would be 0.71 * base reward. Therefore, the most competitive quotes on the market will pay the least commission and receive the best
+price for TICK rewards.
+
+If market makers see an inside spread that seems too low for market conditions, it will be better in some circumstances to trade the quotes off the market
+in order to maintain a fair adjustment factor in the order book.
+
+## Quote Cancellation Slash Rate
+
+The previous version of Microtick allowed the backing of stale quotes to be claimed by any Quote Cancel transaction. With the Stargate release, quote 
+cancellation has a slash rate (default 1%) where the transaction signer claims 1% of the backing and the rest is returned to the quote provider.  This
+rate is adjustable through governance.
