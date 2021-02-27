@@ -1,4 +1,9 @@
-# Microtick Stargate Features
+---
+id: stargate
+title: Microtick Stargate Features
+sidebar_label: Stargate Changes
+slug: /stargate-changes
+---
 
 The upcoming Stargate release brings the highly anticipated IBC capabilities to the Microtick chain, and some exciting new features as well.
 
