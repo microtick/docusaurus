@@ -41,7 +41,9 @@ The community can now dynamically add new markets without having to stop and res
 automatically for trading upon proposal passage. Each market must have a **name** and **description**. No structure or naming convention is enforced by the
 governance mechanism itself; proposal curation is assumed to have been provided by the community through the proposal process.
 
-## Option Bids
+## New Trading Features
+
+### Option Bids
 
 With the Stargate update, all quotes have implicit bids associated with them where market makers must "buy back" quotes that disagree from the consensus.
 The default bid premium is zero, meaning all quotes that are at the consensus price will have bids of zero premium (a riskless trade for the market maker if
@@ -54,7 +56,7 @@ buy premium, but not at the ask price on the market.
 Because bid premiums do not inherently back quotes, there is no way to create a bid without the associated ask. Bids must always be less than the ask price
 of a quote, and quote weights post-Stargate are computed as backing / average premium, where average premium is bid + ask / 2.
 
-## Synthetic Long / Short Positions
+### Synthetic Long / Short Positions
 
 The addition of bids to the marketplace creates the ability for traders to create option combo positions. The most common of these are synthetic long and
 short positions. With Microtick Stargate you can now query synthetic prices and trade synthetic positions directly without having to buy / sell the individual
@@ -74,7 +76,9 @@ position is identical to buying or selling the underlying asset, over the time d
 $ mtm tx microtick trade <market> <duration> [buy|sell] syn <quantity>
 ```
 
-## Commission Structure
+## Commission and TICK Rewards
+
+### Commission Structure
 
 The previous version of Microtick had TICK rewards based directly on the amount of commissions paid. Microtick Stargate calculates TICK rewards based
 on the amount of backing for quotes, and based on a fixed rate for trades (default 0).  These are specified in the genesis file and independently 
@@ -89,7 +93,7 @@ various transactions:
 | Settle Trade | 0.01 (fixed) | 0 | |
 | Cancel Quote | 0.01% | N/A | Withdrawing quote backing pays the cancel commission rate |
 
-## Adjustment Factor for Quotes
+### Adjustment Factor for Quotes
 
 With Microtick Stargate we introduce the concept of an adjustment factor that is used to dynamically adjust commissions and TICK reward based on how
 competitive a quote's premium is in the marketplace.
@@ -112,7 +116,7 @@ price for TICK rewards.
 If market makers see an inside spread that seems too low for market conditions, it will be better in some circumstances to trade the quotes off the market
 in order to maintain a fair adjustment factor in the order book.
 
-## Quote Cancellation Slash Rate
+### Quote Cancellation Slash Rate
 
 The previous version of Microtick allowed the backing of stale quotes to be claimed by any Quote Cancel transaction. With the Stargate release, quote 
 cancellation has a slash rate (default 1%) where the transaction signer claims 1% of the backing and the rest is returned to the quote provider.  This
