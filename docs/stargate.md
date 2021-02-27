@@ -41,12 +41,38 @@ governance mechanism itself; proposal curation is assumed to have been provided 
 
 ## Option Bids
 
+With the Stargate update, all quotes have implicit bids associated with them where market makers must "buy back" quotes that disagree from the consensus.
+The default bid premium is zero, meaning all quotes that are at the consensus price will have bids of zero premium (a riskless trade for the market maker if
+someone decides to sell into the quote). As the consensus moves away from the quote's spot, the bid premium adjusts in the same way asks premiums do (with a
+linear delta of 0.5).
 
+While the default bid price is zero, market makers can optionally create a quote with a bid greater than zero. Market makers can do this is they want to
+buy premium, but not at the ask price on the market.
 
-Quote weights are now computed backing / average premium, where average premium is bid + ask / 2
+Because bid premiums do not inherently back quotes, there is no way to create a bid without the associated ask. Bids must always be less than the ask price
+of a quote, and quote weights post-Stargate are computed as backing / average premium, where average premium is bid + ask / 2.
 
 ## Synthetic Long / Short Positions
 
+The addition of bids to the marketplace creates the ability for traders to create option combo positions. The most common of these are synthetic long and
+short positions. With Microtick Stargate you can now query synthetic prices and trade synthetic positions directly without having to buy / sell the individual
+option legs independently.
+
+To query synthetic bids and asks from the CLI:
+
+$ mtm query microtick synthetic <market> <duration>
+
+Trading a synthetic position is identical to trading an option, but uses the keyword "syn" instead of "call" or "put". The profit / loss of a synthetic
+position is identical to buying or selling the underlying asset, over the time duration of the position - except you don't have to pay the strike price.
+(You do have to put up token backing for the short leg of the position, which is refunded to you at trade settlement if the trade moves in your direction)
+
+$ mtm tx microtick trade <market> <duration> [buy|sell] syn <quantity>
+
 ## Dynamic Commissions
+
+With Microtick Stargate we introduce the concept of an adjustment factor that is used to dynamically adjust commissions and TICK reward based on how
+competitive a quote's premium is in the marketplace.
+
+![Adjustment Factor](../static/img/adjustment_factor.png)
 
 ## Dynamic TICK Reward
